@@ -72,5 +72,8 @@
     "storybook": "^6.5.15",
     "ts-jest": "^29.0.5",
     "webpack": "^5.75.0"
+  },
+  "jest": {
+    "testMatch": ["**/__tests__/**/*.(spec|test).+(ts|tsx)"]
   }
 }
