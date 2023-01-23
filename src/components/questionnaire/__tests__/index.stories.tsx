@@ -17,7 +17,5 @@ export const Initial = () => (
     questions={questions}
     onCancel={() => {}}
     onComplete={() => {}}
-  >
-    Questionnaire
-  </Questionnaire>
+  />
 );

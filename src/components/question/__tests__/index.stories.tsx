@@ -12,8 +12,6 @@ export default {
   component: QuestionComponent,
 };
 
-export const Initial = () => (
-  <QuestionComponent question={question} onSelect={() => {}}>
-    QuestionComponent
-  </QuestionComponent>
+export const Basic = () => (
+  <QuestionComponent question={question} onSelect={() => {}} />
 );
