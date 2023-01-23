@@ -2,7 +2,11 @@ import { unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
 import { questions } from "./fixtures";
-import { renderQuestionnaire, selectNthOption } from "./utils";
+import {
+  proceedWithNthOption,
+  renderQuestionnaire,
+  selectNthOption,
+} from "./utils";
 
 let container: HTMLDivElement | null = null;
 
@@ -36,14 +40,28 @@ describe("Question", function () {
 
     expect(progressElem?.innerHTML).toBe("1/3");
   });
+  it("should disable submit until all answer selected", () => {
+    const { submitButtonElem, nextButtonElem, questionnaireElem } =
+      renderQuestionnaire(container, {
+        questions: questions,
+        onComplete: () => {},
+        onCancel: () => {},
+      });
+
+    expect(submitButtonElem).toBeDisabled();
+
+    proceedWithNthOption(questionnaireElem, nextButtonElem, 3);
+    proceedWithNthOption(questionnaireElem, nextButtonElem, 3);
+    proceedWithNthOption(questionnaireElem, nextButtonElem, 3);
+
+    expect(submitButtonElem).toBeEnabled();
+  });
 
   it("should select answer and go to next", () => {
-    const onComplete = jest.fn();
-
     const { progressElem, nextButtonElem, questionnaireElem } =
       renderQuestionnaire(container, {
         questions: questions,
-        onComplete: onComplete,
+        onComplete: () => {},
         onCancel: () => {},
       });
 
@@ -60,12 +78,10 @@ describe("Question", function () {
   });
 
   it("should have answer selected after going back to it", () => {
-    const onComplete = jest.fn();
-
-    const { prevButtonElem, progressElem, nextButtonElem, questionnaireElem } =
+    const { prevButtonElem, nextButtonElem, questionnaireElem } =
       renderQuestionnaire(container, {
         questions: questions,
-        onComplete: onComplete,
+        onComplete: () => {},
         onCancel: () => {},
       });
 
@@ -88,5 +104,46 @@ describe("Question", function () {
     optionElem = selectNthOption(questionnaireElem, 3);
 
     expect(optionElem).toBeChecked();
+  });
+
+  it("should call onComplete", () => {
+    const onComplete = jest.fn();
+
+    const { submitButtonElem, nextButtonElem, questionnaireElem } =
+      renderQuestionnaire(container, {
+        questions: questions,
+        onComplete,
+        onCancel: () => {},
+      });
+
+    proceedWithNthOption(questionnaireElem, nextButtonElem, 3);
+    proceedWithNthOption(questionnaireElem, nextButtonElem, 3);
+    proceedWithNthOption(questionnaireElem, nextButtonElem, 3);
+
+    act(() => {
+      submitButtonElem?.dispatchEvent(
+        new MouseEvent("click", { bubbles: true })
+      );
+    });
+
+    expect(onComplete).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call onCancel", () => {
+    const onCancel = jest.fn();
+
+    const { cancelButtonElem } = renderQuestionnaire(container, {
+      questions: questions,
+      onComplete: () => {},
+      onCancel,
+    });
+
+    act(() => {
+      cancelButtonElem?.dispatchEvent(
+        new MouseEvent("click", { bubbles: true })
+      );
+    });
+
+    expect(onCancel).toHaveBeenCalledTimes(1);
   });
 });
