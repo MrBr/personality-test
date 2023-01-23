@@ -70,6 +70,7 @@
     "babel-plugin-named-exports-order": "0.0.2",
     "prop-types": "^15.8.1",
     "storybook": "^6.5.15",
+    "ts-jest": "^29.0.5",
     "webpack": "^5.75.0"
   }
 }
