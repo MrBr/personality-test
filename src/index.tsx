@@ -1,10 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import "bootstrap/dist/css/bootstrap.min.css";
 
 import reportWebVitals from "./reportWebVitals";
+import App from "./App";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -12,12 +10,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<div>Home</div>} />
-        <Route path="/quiz" element={<div>Quiz</div>} />
-      </Routes>
-    </BrowserRouter>
+    <App />
   </React.StrictMode>
 );
 
