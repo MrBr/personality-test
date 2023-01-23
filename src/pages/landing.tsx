@@ -5,7 +5,7 @@ import { Paths } from "../constants";
 const Landing = () => {
   return (
     <Container>
-      <Row>
+      <Row className="mt-3">
         <Col className="justify-content-center">
           <h1 className="text-center">Personality test</h1>
           <h2 className="text-center">
